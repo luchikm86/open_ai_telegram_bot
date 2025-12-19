@@ -23,7 +23,7 @@ class ChatGPTService:
 
     # Send message list in ChatGPT
     async def send_message_list(self) -> str:
-        completion = await self.client.chat.completions.create(
+        completion = self.client.chat.completions.create(
             # Model ChatGPT
             model="gpt-3.5-turbo",
             # Messages list(history chat)
