@@ -70,7 +70,7 @@ async def gpt(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await send_image(update, context, "gpt")
     chatgpt_service.set_prompt(load_prompt("gpt"))
     await send_text(update, context, "Задайте питання ...")
-    context.user_data["conversation_stat"] = "gpt"
+    context.user_data["conversation_state"] = "gpt"
 
 
 async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
