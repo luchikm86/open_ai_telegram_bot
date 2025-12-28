@@ -1,3 +1,4 @@
+import io
 import logging
 from random import choice
 
@@ -211,3 +212,58 @@ async def show_funny_response(update: Update, context: ContextTypes.DEFAULT_TYPE
     """
     full_message = f"{random_response}\n{available_commands}"
     await update.message.reply_text(full_message)
+
+
+async def handle_voice_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if not update.message or not  update.message.voice:
+        return
+
+    # Відправляємо статус "записує голос", щоб користувач бачив, що бот працює
+    await context.bot.send_chat_action(
+        chat_id=update.message.chat_id,
+        action='record_voice'
+    )
+
+    try:
+        # Отримуємо та завантажуємо голосове повідомлення
+        voice_file = await update.message.voice.get_file()
+        # Використовуємо BytesIO, щоб не зберігати файли на диск вручну,
+        # Завантажуємо аудіо в пам'ять
+        voice_bytearray = await voice_file.download_as_bytearray()
+        audio_buffer = io.BytesIO(voice_bytearray)
+
+        # 3. STT: Перетворюємо голос користувача в текст
+        user_text = await chatgpt_service.speech_to_text(audio_buffer)
+
+        # Визначаємо поточний стан (gpt або talk)
+        state = context.user_data.get("conversation_state")
+
+        if state == "talk":
+            # Якщо ми в режимі розмови з особистістю
+            personality = context.user_data.get("selected_personality")
+            chatgpt_service.set_prompt(load_prompt(personality))
+        else:
+            # Якщо state == "gpt" АБО state взагалі не встановлено (None)
+            # Встановлюємо стандартний промпт GPT
+            chatgpt_service.set_prompt(load_prompt("gpt"))
+            # Опціонально: встановлюємо стан, щоб наступні повідомлення йшли сюди ж
+            context.user_data["conversation_state"] = "gpt"
+        # Отримання відповіді від ChatGPT
+        gpt_response_text = await chatgpt_service.add_message(user_text)
+
+        # 5. Перетворення відповіді в голос (TTS)
+        await context.bot.send_chat_action(
+            chat_id=update.effective_chat.id,
+            action='record_voice'
+        )
+        audio_answer = await chatgpt_service.text_to_speech(gpt_response_text)
+
+        # Відправка
+        await update.message.reply_voice(
+            voice=io.BytesIO(audio_answer),
+            # caption=f"🎤 {user_text[:50]}..."  # Коротке прев'ю того, що розпізнав бот
+        )
+
+    except Exception as e:
+        logger.error(f"Помилка обробки голосового повідомлення: {e}")
+        await  update.message.reply_text("Вибачте, сталася помилка при обробці голосового повідомлення.")

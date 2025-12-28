@@ -12,6 +12,7 @@ class ChatGPTService:
         self.messages_list = []
     async def send_message_list(self) -> str:
         completion = self.client.chat.completions.create(
+            # model="gpt-4o-mini",
             model="gpt-3.5-turbo",
             messages=self.messages_list,
             max_tokens=3000,
@@ -34,3 +35,19 @@ class ChatGPTService:
         self.messages_list.append({"role": "system", "content": prompt_text})
         self.messages_list.append({"role": "user", "content": message_text})
         return await self.send_message_list()
+
+    async def speech_to_text(self, audio_buffer) -> str:
+        audio_buffer.name = "voice.ogg"
+        transcript = self.client.audio.transcriptions.create(
+            model="whisper-1",
+            file=audio_buffer
+        )
+        return transcript.text
+
+    async def text_to_speech(self, text: str) -> bytes:
+        response = self.client.audio.speech.create(
+            model="tts-1",
+            voice="alloy",
+            input=text
+        )
+        return response.content
