@@ -20,7 +20,7 @@ A versatile Telegram bot that integrates with OpenAI's ChatGPT to provide variou
 The bot implements a sophisticated audio processing pipeline:
 
 1.  **Speech-to-Text**: Converts incoming `.ogg` voice messages to text using `whisper-1`.
-2.  **AI Generation**: Processes the request using `gpt-4o-mini` with context awareness.
+2.  **AI Generation**: Processes the request using `gpt-3.5-turbo/gpt-4o-mini` with context awareness.
 3.  **Text-to-Speech**: Converts the response back to audio via `tts-1` using the `alloy` voice.
 4.  **Memory Efficient**: All audio is processed in-memory using `io.BytesIO` buffers.
 
