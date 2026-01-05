@@ -15,14 +15,14 @@ A versatile Telegram bot that integrates with OpenAI's ChatGPT to provide variou
 -   **ChatGPT Interface** - Direct chat with OpenAI's ChatGPT (now using gpt-4o-mini)
 -   **Celebrity Chat** - Chat with AI personalities (Linus Torvalds, Guido van Rossum, Mark Zuckerberg)
 
-
 ### ✔ Voice Processing Workflow
-The bot implements a sophisticated audio processing pipeline:
-1. **Speech-to-Text**: Converts incoming `.ogg` voice messages to text using `whisper-1`.
-2. **AI Generation**: Processes the request using `gpt-4o-mini` with context awareness.
-3. **Text-to-Speech**: Converts the response back to audio via `tts-1` using the `alloy` voice.
-4. **Memory Efficient**: All audio is processed in-memory using `io.BytesIO` buffers.
 
+The bot implements a sophisticated audio processing pipeline:
+
+1.  **Speech-to-Text**: Converts incoming `.ogg` voice messages to text using `whisper-1`.
+2.  **AI Generation**: Processes the request using `gpt-4o-mini` with context awareness.
+3.  **Text-to-Speech**: Converts the response back to audio via `tts-1` using the `alloy` voice.
+4.  **Memory Efficient**: All audio is processed in-memory using `io.BytesIO` buffers.
 
 ### ✔ Optional Features (Choose 2+)
 
