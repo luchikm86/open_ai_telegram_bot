@@ -14,6 +14,7 @@ A versatile Telegram bot that integrates with OpenAI's ChatGPT to provide variou
 -   **Random Fact Generator** - Get interesting facts with AI-generated content
 -   **ChatGPT Interface** - Direct chat with OpenAI's ChatGPT (now using gpt-4o-mini)
 -   **Celebrity Chat** - Chat with AI personalities (Linus Torvalds, Guido van Rossum, Mark Zuckerberg)
+  - **Vocabulary Trainer** - Learn new words in blocks of 10 with AI-powered testing and validation.
 
 ### ✔ Voice Processing Workflow
 
@@ -36,6 +37,18 @@ The bot implements a sophisticated audio processing pipeline:
 ---
 
 ![random.jpg](src/resources/images/random.jpg)
+
+### ✔ Vocabulary Trainer Workflow
+
+The bot features an interactive learning system to help users expand their English vocabulary:
+
+1.  **Word Generation**: Using the `/training` command, the bot generates a new English word, its translation, and a usage example via ChatGPT.
+2.  **Learning Phase**: Users can collect up to 10 words. The bot tracks the progress (e.g., "6/10") using interactive buttons.
+3.  **Knowledge Testing**: Once 10 words are collected, the bot initiates a test mode (`training_test` state).
+4.  **AI Validation**: During the test, ChatGPT acts as an examiner. It evaluates the user's translation and recognizes synonyms or contextually correct answers, responding with a simple "YES" or "NO" logic to update the score.
+5.  **Results**: After completing the test, the bot displays the final score and clears the list for the next session.
+
+![training.jpg](src/resources/images/training.jpg)
 
 ### ✔ Prerequisites
 
@@ -93,6 +106,7 @@ Available commands:
 -   `/random` - Get a random fact
 -   `/gpt` - Chat with ChatGPT
 -   `/talk` - Chat with a celebrity personality
+-   `/training` - Start the Vocabulary Trainer session
 -   **Voice Messages** - Send a voice message to get an audio response from the AI
 
 ![gpt.jpg](src/resources/images/gpt.jpg)
@@ -122,7 +136,9 @@ open_ai_telegram_bot
             ├── random.txt
             ├── talk_guido_van_rossum.txt
             ├── talk_linus_torvalds.txt
-            └── talk_mark_zuckerberg.txt
+            ├── talk_mark_zuckerberg.txt
+            ├── training.txt
+            └── training_test.txt
 ```
 
 ---
